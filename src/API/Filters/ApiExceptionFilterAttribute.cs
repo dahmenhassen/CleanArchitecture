@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.Application.Common.Exceptions;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -13,12 +12,12 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         // Register known exception types and handlers.
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
-            {
-                { typeof(ValidationException), HandleValidationException },
-                { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
-            };
+        {
+            { typeof(ValidationException), HandleValidationException },
+            { typeof(NotFoundException), HandleNotFoundException },
+            { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
+            { typeof(ForbiddenAccessException), HandleForbiddenAccessException }
+        };
     }
 
     public override void OnException(ExceptionContext context)
@@ -40,15 +39,14 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         if (!context.ModelState.IsValid)
         {
             HandleInvalidModelStateException(context);
-            return;
         }
     }
 
     private void HandleValidationException(ExceptionContext context)
     {
-        var exception = (ValidationException)context.Exception;
+        ValidationException exception = (ValidationException)context.Exception;
 
-        var details = new ValidationProblemDetails(exception.Errors)
+        ValidationProblemDetails details = new(exception.Errors)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
@@ -60,7 +58,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleInvalidModelStateException(ExceptionContext context)
     {
-        var details = new ValidationProblemDetails(context.ModelState)
+        ValidationProblemDetails details = new(context.ModelState)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
@@ -72,9 +70,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleNotFoundException(ExceptionContext context)
     {
-        var exception = (NotFoundException)context.Exception;
+        NotFoundException exception = (NotFoundException)context.Exception;
 
-        var details = new ProblemDetails()
+        ProblemDetails details = new()
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "The specified resource was not found.",
@@ -88,34 +86,28 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleUnauthorizedAccessException(ExceptionContext context)
     {
-        var details = new ProblemDetails
+        ProblemDetails details = new()
         {
             Status = StatusCodes.Status401Unauthorized,
             Title = "Unauthorized",
             Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
         };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status401Unauthorized
-        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status401Unauthorized };
 
         context.ExceptionHandled = true;
     }
 
     private void HandleForbiddenAccessException(ExceptionContext context)
     {
-        var details = new ProblemDetails
+        ProblemDetails details = new()
         {
             Status = StatusCodes.Status403Forbidden,
             Title = "Forbidden",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
         };
 
-        context.Result = new ObjectResult(details)
-        {
-            StatusCode = StatusCodes.Status403Forbidden
-        };
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status403Forbidden };
 
         context.ExceptionHandled = true;
     }

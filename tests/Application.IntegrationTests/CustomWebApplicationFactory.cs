@@ -17,7 +17,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureAppConfiguration(configurationBuilder =>
         {
-            var integrationConfig = new ConfigurationBuilder()
+            IConfigurationRoot integrationConfig = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables()
                 .Build();
