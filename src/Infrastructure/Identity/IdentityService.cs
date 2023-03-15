@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -39,6 +40,12 @@ public class IdentityService : IIdentityService
         return (result.ToApplicationResult(), user.Id);
     }
 
+    public async Task<bool> CheckPasswordAsync(string userId, string password)
+    {
+        ApplicationUser user = await GetUser(userId);
+        return await _userManager.CheckPasswordAsync(user, password);
+    }
+
     public async Task<bool> IsInRoleAsync(string userId, string role)
     {
         ApplicationUser? user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
@@ -74,5 +81,22 @@ public class IdentityService : IIdentityService
         IdentityResult result = await _userManager.DeleteAsync(user);
 
         return result.ToApplicationResult();
+    }
+    
+    public async Task<IList<string>> GetUserRoleAsync(string userId)
+    {
+        ApplicationUser user = await GetUser(userId);
+        return await _userManager.GetRolesAsync(user);
+    }
+    
+    private async Task<ApplicationUser> GetUser(string userId)
+    {
+        ApplicationUser? user = await _userManager.FindByIdAsync(userId);
+        if (user is null)
+        {
+            throw new NotFoundException(ServiceError.UserNotFound.Message);
+        }
+
+        return user;
     }
 }

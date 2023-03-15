@@ -5,7 +5,293 @@
     "title": "CleanArchitecture API",
     "version": "1.0.0"
   },
+  "paths": {
+    "/api/Users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_CreateUser",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserCommandRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfCreateUserCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/CurrentUser": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfGetCurrentUserQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Authentication": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "Authentication_Login",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginCommandRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfLoginCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
+    "schemas": {
+      "ServiceResultOfCreateUserCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateUserCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "CreateUserCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
+      "ServiceResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "succeeded": {
+            "type": "boolean"
+          },
+          "error": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ServiceError"
+              }
+            ]
+          }
+        }
+      },
+      "ServiceError": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateUserCommandRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userName",
+          "firstName",
+          "lastName",
+          "password",
+          "confirmPassword"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "confirmPassword": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ServiceResultOfGetCurrentUserQueryResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/GetCurrentUserQueryResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "GetCurrentUserQueryResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ServiceResultOfLoginCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LoginCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "LoginCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginCommandRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userName",
+          "password"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "JWT": {
         "type": "apiKey",

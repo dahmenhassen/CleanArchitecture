@@ -11,6 +11,10 @@ public interface IIdentityService
     Task<bool> AuthorizeAsync(string userId, string policyName);
 
     Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
+    
+    Task<bool> CheckPasswordAsync(string userId, string password);
+    
+    Task<IList<string>> GetUserRoleAsync(string userId);
 
     Task<Result> DeleteUserAsync(string userId);
 }
