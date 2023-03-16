@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CleanArchitecture.Domain.Enums;
+using FluentValidation;
 
 namespace CleanArchitecture.Application.User.Commands.CreateUser;
 
@@ -17,6 +18,9 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommandReq
             .Equal(u => u.Password)
             .WithMessage("'Password' and 'Confirm password' are not the same")
             .NotEmpty().NotNull();
-        RuleFor(v => v.Roles).NotEmpty().NotNull();
+        RuleFor(v => v.Roles).Must(roles =>
+        {
+            return roles.All(role => Enum.IsDefined(typeof(Roles), role));
+        }).WithMessage("invalid role").NotEmpty().NotNull();
     }
 }

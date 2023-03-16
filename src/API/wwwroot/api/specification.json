@@ -219,6 +219,50 @@
           }
         }
       }
+    },
+    "/api/Users/{id}/Roles": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_UpdateUserRoles",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRolesCommandRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfUpdateUserRolesCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -596,6 +640,59 @@
           "confirmPassword": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "ServiceResultOfUpdateUserRolesCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateUserRolesCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "UpdateUserRolesCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateUserRolesCommandRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "roles"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "roles": {
+            "type": "array",
+            "minLength": 1,
+            "nullable": false,
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

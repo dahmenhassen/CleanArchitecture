@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Tools;
 using CleanArchitecture.Application.User.Commands.CreateUser;
 using CleanArchitecture.Application.User.Commands.DeleteUser;
 using CleanArchitecture.Application.User.Commands.UpdateUser;
+using CleanArchitecture.Application.User.Commands.UpdateUserRoles;
 using CleanArchitecture.Application.User.Queries.GetCurrentUser;
 using CleanArchitecture.Application.User.Queries.GetUsersWithPagination;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,14 @@ public class UsersController : ApiControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ServiceResult<UpdateUserCommandResponse>>> UpdateUser(string id,
         UpdateUserCommandRequest request)
+    {
+        Utils.CheckIsIdsAreSame(id, request.Id);
+        return await Mediator.Send(request);
+    }
+    
+    [HttpPut("{id}/Roles")]
+    public async Task<ActionResult<ServiceResult<UpdateUserRolesCommandResponse>>> UpdateUserRoles(string id,
+        UpdateUserRolesCommandRequest request)
     {
         Utils.CheckIsIdsAreSame(id, request.Id);
         return await Mediator.Send(request);
