@@ -11,8 +11,8 @@ public class
     CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, ServiceResult<CreateUserCommandResponse>>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IIdentityService _identityService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IIdentityService _identityService;
     private readonly ITokenService _tokenService;
 
     public CreateUserCommandHandler(IApplicationDbContext context, ITokenService tokenService,
@@ -27,12 +27,12 @@ public class
     public async Task<ServiceResult<CreateUserCommandResponse>> Handle(CreateUserCommandRequest request,
         CancellationToken cancellationToken)
     {
-        var currentUserId = _currentUserService.UserId;
+        string? currentUserId = _currentUserService.UserId;
         List<string> roles = new() { Roles.User.ToString() };
 
         if (!string.IsNullOrEmpty(currentUserId))
         {
-            var currentUserRoles = await _identityService.GetUserRoleAsync(currentUserId);
+            IList<string> currentUserRoles = await _identityService.GetUserRoleAsync(currentUserId);
             if (currentUserRoles.Contains(Roles.Admin.ToString()))
             {
                 roles = request.Roles;
@@ -47,7 +47,7 @@ public class
             throw new ValidationException(createUserResult.Errors);
         }
 
-        var changeRoleResult = await _identityService.ChangeRolesAsync(userId, roles);
+        Result changeRoleResult = await _identityService.ChangeRolesAsync(userId, roles);
 
         if (!changeRoleResult.Succeeded)
         {

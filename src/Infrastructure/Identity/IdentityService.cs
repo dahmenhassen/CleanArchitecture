@@ -43,14 +43,14 @@ public class IdentityService : IIdentityService
     public async Task<Result> ChangeRolesAsync(string userId, IEnumerable<string> roles)
     {
         ApplicationUser user = await GetUserAsync(userId);
-        var userRoles = await GetUserRoleAsync(userId);
-        var removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
+        IList<string> userRoles = await GetUserRoleAsync(userId);
+        IdentityResult removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
         if (!removeResult.Succeeded)
         {
             return removeResult.ToApplicationResult();
         }
 
-        var addResult = await _userManager.AddToRolesAsync(user, roles);
+        IdentityResult addResult = await _userManager.AddToRolesAsync(user, roles);
 
         return addResult.ToApplicationResult();
     }
@@ -91,17 +91,17 @@ public class IdentityService : IIdentityService
         return await DeleteUserAsync(user);
     }
 
+    public async Task<IList<string>> GetUserRoleAsync(string userId)
+    {
+        ApplicationUser user = await GetUserAsync(userId);
+        return await _userManager.GetRolesAsync(user);
+    }
+
     public async Task<Result> DeleteUserAsync(ApplicationUser user)
     {
         IdentityResult result = await _userManager.DeleteAsync(user);
 
         return result.ToApplicationResult();
-    }
-
-    public async Task<IList<string>> GetUserRoleAsync(string userId)
-    {
-        ApplicationUser user = await GetUserAsync(userId);
-        return await _userManager.GetRolesAsync(user);
     }
 
     private async Task<ApplicationUser> GetUserAsync(string userId)

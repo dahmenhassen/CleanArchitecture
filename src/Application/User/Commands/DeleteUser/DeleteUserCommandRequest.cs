@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CleanArchitecture.Application.Common.Models;
+﻿using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security;
 using MediatR;
 

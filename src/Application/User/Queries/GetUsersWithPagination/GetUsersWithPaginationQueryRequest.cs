@@ -5,7 +5,8 @@ using MediatR;
 namespace CleanArchitecture.Application.User.Queries.GetUsersWithPagination;
 
 [Authorize(Roles = "Admin")]
-public record GetUsersWithPaginationQueryRequest : IRequest<ServiceResult<PaginatedList<GetUsersWithPaginationQueryResponse>>>
+public record
+    GetUsersWithPaginationQueryRequest : IRequest<ServiceResult<PaginatedList<GetUsersWithPaginationQueryResponse>>>
 {
     public string? UserNameLike { get; init; }
     public string? Sort { get; init; }

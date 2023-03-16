@@ -6,7 +6,6 @@ namespace API.Controllers;
 
 public class AuthenticationController : ApiControllerBase
 {
-    
     [HttpPost]
     public async Task<ActionResult<ServiceResult<LoginCommandResponse>>> Login(LoginCommandRequest request)
     {

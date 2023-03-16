@@ -23,7 +23,7 @@ public class GetUsersWithPaginationQueryHandler : IRequestHandler<GetUsersWithPa
     public async Task<ServiceResult<PaginatedList<GetUsersWithPaginationQueryResponse>>> Handle(
         GetUsersWithPaginationQueryRequest request, CancellationToken cancellationToken)
     {
-        var paginatedList = await _context.UserInfos
+        PaginatedList<GetUsersWithPaginationQueryResponse> paginatedList = await _context.UserInfos
             .WhereIf(!string.IsNullOrEmpty(request.UserNameLike),
                 u => u.UserName.Contains(request.UserNameLike!)
             )
