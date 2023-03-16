@@ -2,5 +2,5 @@
 
 public class LoginCommandResponse
 {
-    public string Token { get; init; } = String.Empty;
+    public required string Token { get; init; }
 }

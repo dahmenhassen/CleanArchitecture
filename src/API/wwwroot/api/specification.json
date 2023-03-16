@@ -433,6 +433,7 @@
         "properties": {
           "userName": {
             "type": "string",
+            "format": "email",
             "minLength": 1,
             "nullable": false
           },
