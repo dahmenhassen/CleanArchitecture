@@ -28,7 +28,7 @@ public class GetUsersWithPaginationQueryHandler : IRequestHandler<GetUsersWithPa
                 u => u.UserName.Contains(request.UserNameLike!)
             )
             .OrderByIf(!string.IsNullOrEmpty(request.Sort),
-                request.Sort.Trim()
+                request.Sort!.Trim()
             )
             .ProjectTo<GetUsersWithPaginationQueryResponse>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);

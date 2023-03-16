@@ -6,7 +6,6 @@ public class GetUsersWithPaginationQueryValidator : AbstractValidator<GetUsersWi
 {
     public GetUsersWithPaginationQueryValidator()
     {
-        RuleFor(v => v.Sort).NotEmpty().NotNull();
         RuleFor(v => v.PageNumber)
             .GreaterThanOrEqualTo(1)
             .NotEmpty().NotNull();
