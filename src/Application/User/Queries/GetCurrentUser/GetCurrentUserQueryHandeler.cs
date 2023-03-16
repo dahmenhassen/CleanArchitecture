@@ -5,7 +5,7 @@ using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 
-namespace CleanArchitecture.Application.User.Queries.GetCurrent;
+namespace CleanArchitecture.Application.User.Queries.GetCurrentUser;
 
 [Authorize(Roles = "Admin,User")]
 public class

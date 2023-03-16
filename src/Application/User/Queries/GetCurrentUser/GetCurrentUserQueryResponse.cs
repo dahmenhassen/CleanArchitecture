@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Application.Common.Mappings;
 using CleanArchitecture.Domain.Entities;
 
-namespace CleanArchitecture.Application.User.Queries.GetCurrent;
+namespace CleanArchitecture.Application.User.Queries.GetCurrentUser;
 
 public class GetCurrentUserQueryResponse : IMapFrom<UserInfo>
 {

@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.API.Services;
+﻿using API.Services;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +6,7 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace API;
 
 public static class ConfigureServices
 {

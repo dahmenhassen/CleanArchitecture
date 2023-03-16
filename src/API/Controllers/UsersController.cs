@@ -1,10 +1,9 @@
-﻿using API.Controllers;
-using CleanArchitecture.Application.Common.Models;
+﻿using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.User.Commands.CreateUser;
-using CleanArchitecture.Application.User.Queries.GetCurrent;
+using CleanArchitecture.Application.User.Queries.GetCurrentUser;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanArchitecture.API.Controllers;
+namespace API.Controllers;
 
 public class UsersController : ApiControllerBase
 {

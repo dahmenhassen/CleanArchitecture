@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.API.Filters;
+﻿using API.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

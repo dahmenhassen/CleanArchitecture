@@ -3,7 +3,7 @@ using CleanArchitecture.Application.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace CleanArchitecture.API.Filters;
+namespace API.Filters;
 
 // public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 // {
