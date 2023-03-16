@@ -1,6 +1,9 @@
-﻿using CleanArchitecture.Application.Common.Models;
+﻿using CleanArchitecture.Application.Common.Exceptions;
+using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Tools;
 using CleanArchitecture.Application.User.Commands.CreateUser;
 using CleanArchitecture.Application.User.Commands.DeleteUser;
+using CleanArchitecture.Application.User.Commands.UpdateUser;
 using CleanArchitecture.Application.User.Queries.GetCurrentUser;
 using CleanArchitecture.Application.User.Queries.GetUsersWithPagination;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +35,14 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<ServiceResult<PaginatedList<GetUsersWithPaginationQueryResponse>>>>
         GetUsersWithPagination([FromQuery] GetUsersWithPaginationQueryRequest request)
     {
+        return await Mediator.Send(request);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ServiceResult<UpdateUserCommandResponse>>> UpdateUser(string id,
+        UpdateUserCommandRequest request)
+    {
+        Utils.CheckIsIdsAreSame(id, request.Id);
         return await Mediator.Send(request);
     }
 }

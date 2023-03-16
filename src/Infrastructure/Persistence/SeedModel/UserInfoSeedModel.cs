@@ -20,7 +20,7 @@ public static class UserInfoSeedModel
         ModifiedBy = "Migration",
         Id = IdentityUserSeedModel.User.Id,
         UserName = IdentityUserSeedModel.User.UserName,
-        FirstName = "aormal",
+        FirstName = "Normal",
         LastName = "Guy"
     };
 }
