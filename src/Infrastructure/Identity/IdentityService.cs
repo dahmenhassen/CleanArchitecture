@@ -68,6 +68,13 @@ public class IdentityService : IIdentityService
         IdentityResult changePasswordResult = await _userManager.ResetPasswordAsync(user, token, password);
         return changePasswordResult.ToApplicationResult();
     }
+    
+    public async Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
+    {
+        ApplicationUser user = await GetUserAsync(userId);
+        IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        return changePasswordResult.ToApplicationResult();
+    }
 
     public async Task<bool> IsInRoleAsync(string userId, string role)
     {

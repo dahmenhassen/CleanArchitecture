@@ -263,6 +263,38 @@
           }
         }
       }
+    },
+    "/api/Users/CurrentUser/Password": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_UpdateUserPassword",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserPasswordCommandRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfUpdateUserPasswordCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -693,6 +725,62 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "ServiceResultOfUpdateUserPasswordCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateUserPasswordCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "UpdateUserPasswordCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateUserPasswordCommandRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "currentPassword",
+          "newPassword",
+          "confirmNewPassword"
+        ],
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "confirmNewPassword": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
           }
         }
       }

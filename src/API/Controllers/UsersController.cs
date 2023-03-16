@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Tools;
 using CleanArchitecture.Application.User.Commands.CreateUser;
 using CleanArchitecture.Application.User.Commands.DeleteUser;
 using CleanArchitecture.Application.User.Commands.UpdateUser;
+using CleanArchitecture.Application.User.Commands.UpdateUserPassword;
 using CleanArchitecture.Application.User.Commands.UpdateUserRoles;
 using CleanArchitecture.Application.User.Queries.GetCurrentUser;
 using CleanArchitecture.Application.User.Queries.GetUsersWithPagination;
@@ -18,12 +19,6 @@ public class UsersController : ApiControllerBase
         CreateUserCommandRequest request)
     {
         return await Mediator.Send(request);
-    }
-
-    [HttpGet("CurrentUser")]
-    public async Task<ActionResult<ServiceResult<GetCurrentUserQueryResponse>>> GetCurrentUser()
-    {
-        return await Mediator.Send(new GetCurrentUserQueryRequest());
     }
 
     [HttpDelete("{id}")]
@@ -46,12 +41,25 @@ public class UsersController : ApiControllerBase
         Utils.CheckIsIdsAreSame(id, request.Id);
         return await Mediator.Send(request);
     }
-    
+
     [HttpPut("{id}/Roles")]
     public async Task<ActionResult<ServiceResult<UpdateUserRolesCommandResponse>>> UpdateUserRoles(string id,
         UpdateUserRolesCommandRequest request)
     {
         Utils.CheckIsIdsAreSame(id, request.Id);
+        return await Mediator.Send(request);
+    }
+    
+    [HttpGet("CurrentUser")]
+    public async Task<ActionResult<ServiceResult<GetCurrentUserQueryResponse>>> GetCurrentUser()
+    {
+        return await Mediator.Send(new GetCurrentUserQueryRequest());
+    }
+    
+    [HttpPut("CurrentUser/Password")]
+    public async Task<ActionResult<ServiceResult<UpdateUserPasswordCommandResponse>>> UpdateUserPassword(
+        UpdateUserPasswordCommandRequest request)
+    {
         return await Mediator.Send(request);
     }
 }

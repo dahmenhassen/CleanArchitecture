@@ -17,6 +17,8 @@ public interface IIdentityService
     Task<bool> CheckPasswordAsync(string userId, string password);
     
     Task<Result> ChangePasswordAsync(string userId, string password);
+    
+    Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
 
     Task<IList<string>> GetUserRolesAsync(string userId);
 
