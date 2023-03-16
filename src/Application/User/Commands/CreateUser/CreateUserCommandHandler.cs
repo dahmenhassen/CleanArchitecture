@@ -13,13 +13,11 @@ public class
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IIdentityService _identityService;
-    private readonly ITokenService _tokenService;
 
-    public CreateUserCommandHandler(IApplicationDbContext context, ITokenService tokenService,
-        IIdentityService identityService, ICurrentUserService currentUserService)
+    public CreateUserCommandHandler(IApplicationDbContext context, IIdentityService identityService,
+        ICurrentUserService currentUserService)
     {
         _context = context;
-        _tokenService = tokenService;
         _identityService = identityService;
         _currentUserService = currentUserService;
     }
@@ -28,7 +26,7 @@ public class
         CancellationToken cancellationToken)
     {
         string? currentUserId = _currentUserService.UserId;
-        
+
         List<string> roles = new() { Roles.User.ToString() };
 
         if (!string.IsNullOrEmpty(currentUserId))

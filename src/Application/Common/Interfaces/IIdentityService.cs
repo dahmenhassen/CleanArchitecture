@@ -18,6 +18,10 @@ public interface IIdentityService
     
     Task<Result> ChangePasswordAsync(string userId, string password);
     
+    Task<string> GeneratePasswordResetTokenAsync(string userName);
+    
+    Task<Result> ResetPasswordAsync(string userName, string token, string password);
+    
     Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
 
     Task<IList<string>> GetUserRolesAsync(string userId);

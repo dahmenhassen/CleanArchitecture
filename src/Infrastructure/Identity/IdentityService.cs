@@ -26,8 +26,7 @@ public class IdentityService : IIdentityService
 
     public async Task<string?> GetUserNameAsync(string userId)
     {
-        ApplicationUser user = await _userManager.Users.FirstAsync(u => u.Id == userId);
-
+        ApplicationUser user = await GetUserByIdAsync(userId);
         return user.UserName;
     }
 
@@ -42,44 +41,54 @@ public class IdentityService : IIdentityService
 
     public async Task<Result> ChangeRolesAsync(string userId, IEnumerable<string> roles)
     {
-        ApplicationUser user = await GetUserAsync(userId);
+        ApplicationUser user = await GetUserByIdAsync(userId);
         IList<string> userRoles = await GetUserRolesAsync(userId);
         IdentityResult removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
+
         if (!removeResult.Succeeded)
-        {
             return removeResult.ToApplicationResult();
-        }
 
         IdentityResult addResult = await _userManager.AddToRolesAsync(user, roles);
-
         return addResult.ToApplicationResult();
     }
 
     public async Task<bool> CheckPasswordAsync(string userId, string password)
     {
-        ApplicationUser user = await GetUserAsync(userId);
+        ApplicationUser user = await GetUserByIdAsync(userId);
         return await _userManager.CheckPasswordAsync(user, password);
     }
 
     public async Task<Result> ChangePasswordAsync(string userId, string password)
     {
-        ApplicationUser user = await GetUserAsync(userId);
+        ApplicationUser user = await GetUserByIdAsync(userId);
         string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        IdentityResult changePasswordResult = await _userManager.ResetPasswordAsync(user, token, password);
-        return changePasswordResult.ToApplicationResult();
+        IdentityResult result = await _userManager.ResetPasswordAsync(user, token, password);
+        return result.ToApplicationResult();
     }
-    
+
+    public async Task<string> GeneratePasswordResetTokenAsync(string userName)
+    {
+        var user = await GetUserByEmailAsync(userName);
+        return await _userManager.GeneratePasswordResetTokenAsync(user);
+    }
+
+    public async Task<Result> ResetPasswordAsync(string userName, string token, string password)
+    {
+        var user = await GetUserByEmailAsync(userName);
+        var result = await _userManager.ResetPasswordAsync(user, token, password);
+        return result.ToApplicationResult();
+    }
+
     public async Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
     {
-        ApplicationUser user = await GetUserAsync(userId);
-        IdentityResult changePasswordResult = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
-        return changePasswordResult.ToApplicationResult();
+        ApplicationUser user = await GetUserByIdAsync(userId);
+        IdentityResult result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        return result.ToApplicationResult();
     }
 
     public async Task<bool> IsInRoleAsync(string userId, string role)
     {
         ApplicationUser? user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
-
         return user != null && await _userManager.IsInRoleAsync(user, role);
     }
 
@@ -88,45 +97,48 @@ public class IdentityService : IIdentityService
         ApplicationUser? user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
         if (user == null)
-        {
             return false;
-        }
 
         ClaimsPrincipal principal = await _userClaimsPrincipalFactory.CreateAsync(user);
-
         AuthorizationResult result = await _authorizationService.AuthorizeAsync(principal, policyName);
-
         return result.Succeeded;
     }
 
     public async Task<Result> DeleteUserAsync(string userId)
     {
-        ApplicationUser user = await GetUserAsync(userId);
-
+        ApplicationUser user = await GetUserByIdAsync(userId);
         return await DeleteUserAsync(user);
     }
 
     public async Task<IList<string>> GetUserRolesAsync(string userId)
     {
-        ApplicationUser user = await GetUserAsync(userId);
+        ApplicationUser user = await GetUserByIdAsync(userId);
         return await _userManager.GetRolesAsync(user);
     }
 
     public async Task<Result> DeleteUserAsync(ApplicationUser user)
     {
         IdentityResult result = await _userManager.DeleteAsync(user);
-
         return result.ToApplicationResult();
     }
 
-    private async Task<ApplicationUser> GetUserAsync(string userId)
+    private async Task<ApplicationUser> GetUserByIdAsync(string userId)
     {
         ApplicationUser? user = await _userManager.FindByIdAsync(userId);
+        
         if (user is null)
-        {
             throw new NotFoundException(ServiceError.UserNotFound.Message);
-        }
-
+        
+        return user;
+    }
+    
+    private async Task<ApplicationUser> GetUserByEmailAsync(string userName)
+    {
+        ApplicationUser? user = await _userManager.FindByEmailAsync(userName);
+        
+        if (user is null)
+            throw new NotFoundException(ServiceError.UserNotFound.Message);
+        
         return user;
     }
 }

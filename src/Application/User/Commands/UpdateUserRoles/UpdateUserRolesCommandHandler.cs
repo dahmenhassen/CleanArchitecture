@@ -7,18 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.User.Commands.UpdateUserRoles;
 
-public class
-    UpdateUserRolesCommandHandler : IRequestHandler<UpdateUserRolesCommandRequest,
+public class UpdateUserRolesCommandHandler : IRequestHandler<UpdateUserRolesCommandRequest,
         ServiceResult<UpdateUserRolesCommandResponse>>
 {
-    private readonly IApplicationDbContext _context;
     private readonly IIdentityService _identityService;
     private readonly ICurrentUserService _currentUserService;
 
-    public UpdateUserRolesCommandHandler(IApplicationDbContext context, IIdentityService identityService,
-        ICurrentUserService currentUserService)
+    public UpdateUserRolesCommandHandler(IIdentityService identityService, ICurrentUserService currentUserService)
     {
-        _context = context;
         _identityService = identityService;
         _currentUserService = currentUserService;
     }
@@ -32,7 +28,7 @@ public class
         {
             throw new UnauthorizedAccessException();
         }
-        
+
         if (request.Id == currentUserId && !request.Roles.Contains(Roles.Admin.ToString()))
         {
             throw new BadRequestException("you cant remove your admin role");

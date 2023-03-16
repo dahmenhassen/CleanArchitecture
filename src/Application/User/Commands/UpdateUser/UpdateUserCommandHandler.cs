@@ -38,7 +38,7 @@ public class
         {
             throw new ForbiddenAccessException();
         }
-        
+
         var userInfo = await _context.UserInfos.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
         if (userInfo is null)

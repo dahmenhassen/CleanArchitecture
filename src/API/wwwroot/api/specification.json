@@ -126,26 +126,6 @@
         }
       }
     },
-    "/api/Users/CurrentUser": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "Users_GetCurrentUser",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceResultOfGetCurrentUserQueryResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Users/{id}": {
       "delete": {
         "tags": [
@@ -264,7 +244,27 @@
         }
       }
     },
-    "/api/Users/CurrentUser/Password": {
+    "/api/Users/CurrentUser": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfGetCurrentUserQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/CurrentUser/UpdatePassword": {
       "put": {
         "tags": [
           "Users"
@@ -289,6 +289,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ServiceResultOfUpdateUserPasswordCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/ForgotPassword": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_ForgotUserPassword",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotUserPasswordCommandRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfForgotUserPasswordCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/ResetPassword": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_ResetUserPassword",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetUserPasswordCommandRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfResetUserPasswordCommandResponse"
                 }
               }
             }
@@ -452,54 +516,6 @@
             "type": "array",
             "minLength": 1,
             "nullable": false,
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "ServiceResultOfGetCurrentUserQueryResponse": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ServiceResult"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "data": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/GetCurrentUserQueryResponse"
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "GetCurrentUserQueryResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "fullName": {
-            "type": "string"
-          },
-          "userName": {
-            "type": "string"
-          },
-          "roles": {
-            "type": "array",
             "items": {
               "type": "string"
             }
@@ -728,6 +744,54 @@
           }
         }
       },
+      "ServiceResultOfGetCurrentUserQueryResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/GetCurrentUserQueryResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "GetCurrentUserQueryResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "ServiceResultOfUpdateUserPasswordCommandResponse": {
         "allOf": [
           {
@@ -778,6 +842,122 @@
             "nullable": false
           },
           "confirmNewPassword": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ServiceResultOfForgotUserPasswordCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ForgotUserPasswordCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ForgotUserPasswordCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userName": {
+            "type": "string"
+          }
+        }
+      },
+      "ForgotUserPasswordCommandRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userName",
+          "urlCallback"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "urlCallback": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          }
+        }
+      },
+      "ServiceResultOfResetUserPasswordCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ResetUserPasswordCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ResetUserPasswordCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userName": {
+            "type": "string"
+          }
+        }
+      },
+      "ResetUserPasswordCommandRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userName",
+          "token",
+          "newPassword",
+          "confirmPassword"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "pattern": "^[^@]+@[^@]+$",
+            "nullable": false
+          },
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
+          },
+          "confirmPassword": {
             "type": "string",
             "minLength": 1,
             "nullable": false

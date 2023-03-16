@@ -9,7 +9,7 @@ public static class UserInfoSeedModel
         CreatedBy = "Migration",
         ModifiedBy = "Migration",
         Id = IdentityUserSeedModel.Admin.Id,
-        UserName = IdentityUserSeedModel.Admin.UserName,
+        UserName = IdentityUserSeedModel.Admin.UserName!,
         FirstName = "Big",
         LastName = "Boss"
     };
@@ -19,7 +19,7 @@ public static class UserInfoSeedModel
         CreatedBy = "Migration",
         ModifiedBy = "Migration",
         Id = IdentityUserSeedModel.User.Id,
-        UserName = IdentityUserSeedModel.User.UserName,
+        UserName = IdentityUserSeedModel.User.UserName!,
         FirstName = "Normal",
         LastName = "Guy"
     };

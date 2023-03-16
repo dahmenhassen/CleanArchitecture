@@ -7,18 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.User.Commands.UpdateUserPassword;
 
-public class
-    UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommandRequest,
-        ServiceResult<UpdateUserPasswordCommandResponse>>
+public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommandRequest,
+    ServiceResult<UpdateUserPasswordCommandResponse>>
 {
-    private readonly IApplicationDbContext _context;
     private readonly IIdentityService _identityService;
     private readonly ICurrentUserService _currentUserService;
 
-    public UpdateUserPasswordCommandHandler(IApplicationDbContext context, IIdentityService identityService,
-        ICurrentUserService currentUserService)
+    public UpdateUserPasswordCommandHandler(IIdentityService identityService, ICurrentUserService currentUserService)
     {
-        _context = context;
         _identityService = identityService;
         _currentUserService = currentUserService;
     }

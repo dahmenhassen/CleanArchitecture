@@ -3,6 +3,8 @@ using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Tools;
 using CleanArchitecture.Application.User.Commands.CreateUser;
 using CleanArchitecture.Application.User.Commands.DeleteUser;
+using CleanArchitecture.Application.User.Commands.ForgotUserPassword;
+using CleanArchitecture.Application.User.Commands.ResetUserPassword;
 using CleanArchitecture.Application.User.Commands.UpdateUser;
 using CleanArchitecture.Application.User.Commands.UpdateUserPassword;
 using CleanArchitecture.Application.User.Commands.UpdateUserRoles;
@@ -49,16 +51,30 @@ public class UsersController : ApiControllerBase
         Utils.CheckIsIdsAreSame(id, request.Id);
         return await Mediator.Send(request);
     }
-    
+
     [HttpGet("CurrentUser")]
     public async Task<ActionResult<ServiceResult<GetCurrentUserQueryResponse>>> GetCurrentUser()
     {
         return await Mediator.Send(new GetCurrentUserQueryRequest());
     }
-    
-    [HttpPut("CurrentUser/Password")]
+
+    [HttpPut("CurrentUser/UpdatePassword")]
     public async Task<ActionResult<ServiceResult<UpdateUserPasswordCommandResponse>>> UpdateUserPassword(
         UpdateUserPasswordCommandRequest request)
+    {
+        return await Mediator.Send(request);
+    }
+
+    [HttpPost("ForgotPassword")]
+    public async Task<ActionResult<ServiceResult<ForgotUserPasswordCommandResponse>>> ForgotUserPassword(
+        ForgotUserPasswordCommandRequest request)
+    {
+        return await Mediator.Send(request);
+    }
+
+    [HttpPost("ResetPassword")]
+    public async Task<ActionResult<ServiceResult<ResetUserPasswordCommandResponse>>> ResetUserPassword(
+        ResetUserPasswordCommandRequest request)
     {
         return await Mediator.Send(request);
     }
