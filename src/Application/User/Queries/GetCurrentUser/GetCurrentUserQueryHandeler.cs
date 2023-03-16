@@ -7,7 +7,6 @@ using MediatR;
 
 namespace CleanArchitecture.Application.User.Queries.GetCurrentUser;
 
-[Authorize(Roles = "Admin,User")]
 public class
     GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQueryRequest, ServiceResult<GetCurrentUserQueryResponse>>
 {

@@ -68,6 +68,62 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_GetUsersWithPagination",
+        "parameters": [
+          {
+            "name": "UserNameLike",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfPaginatedListOfGetUsersWithPaginationQueryResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/Users/CurrentUser": {
@@ -359,6 +415,84 @@
         "properties": {
           "id": {
             "type": "string"
+          }
+        }
+      },
+      "ServiceResultOfPaginatedListOfGetUsersWithPaginationQueryResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PaginatedListOfGetUsersWithPaginationQueryResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "PaginatedListOfGetUsersWithPaginationQueryResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetUsersWithPaginationQueryResponse"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GetUsersWithPaginationQueryResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

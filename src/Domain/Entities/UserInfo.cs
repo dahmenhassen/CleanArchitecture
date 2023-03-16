@@ -10,7 +10,7 @@ public class UserInfo : BaseAuditableEntity
     public required string Id { get; set; }
 
     [StringLength(256)]
-    public required string? UserName { get; set; }
+    public required string UserName { get; set; }
 
     [StringLength(256)]
     public required string FirstName { get; set; }
