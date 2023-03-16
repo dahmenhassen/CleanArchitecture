@@ -28,6 +28,7 @@ public class
         CancellationToken cancellationToken)
     {
         string? currentUserId = _currentUserService.UserId;
+        
         List<string> roles = new() { Roles.User.ToString() };
 
         if (!string.IsNullOrEmpty(currentUserId))
