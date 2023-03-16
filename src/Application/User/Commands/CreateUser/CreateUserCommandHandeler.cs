@@ -63,6 +63,6 @@ public class
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return ServiceResult.Success(new CreateUserCommandResponse { UserId = userId });
+        return ServiceResult.Success(new CreateUserCommandResponse { Id = userId });
     }
 }

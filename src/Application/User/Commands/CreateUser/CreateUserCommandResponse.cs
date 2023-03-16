@@ -2,5 +2,5 @@
 
 public class CreateUserCommandResponse
 {
-    public required string UserId { get; init; }
+    public required string Id { get; init; }
 }

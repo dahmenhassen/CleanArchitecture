@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.User.Commands.CreateUser;
+using CleanArchitecture.Application.User.Commands.DeleteUser;
 using CleanArchitecture.Application.User.Queries.GetCurrentUser;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,5 +20,11 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<ServiceResult<GetCurrentUserQueryResponse>>> GetCurrentUser()
     {
         return await Mediator.Send(new GetCurrentUserQueryRequest());
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ServiceResult<DeleteUserCommandResponse>>> DeleteUser(string id)
+    {
+        return await Mediator.Send(new DeleteUserCommandRequest(id));
     }
 }

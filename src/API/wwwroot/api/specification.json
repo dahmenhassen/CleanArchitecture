@@ -89,6 +89,38 @@
           }
         }
       }
+    },
+    "/api/Users/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_DeleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResultOfDeleteUserCommandResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -198,7 +230,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "userId": {
+          "id": {
             "type": "string"
           }
         }
@@ -211,7 +243,8 @@
           "firstName",
           "lastName",
           "password",
-          "confirmPassword"
+          "confirmPassword",
+          "roles"
         ],
         "properties": {
           "userName": {
@@ -243,6 +276,8 @@
           },
           "roles": {
             "type": "array",
+            "minLength": 1,
+            "nullable": false,
             "items": {
               "type": "string"
             }
@@ -294,6 +329,36 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "ServiceResultOfDeleteUserCommandResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ServiceResult"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DeleteUserCommandResponse"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "DeleteUserCommandResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
           }
         }
       }
