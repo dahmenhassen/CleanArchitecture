@@ -40,9 +40,24 @@ public class IdentityService : IIdentityService
         return (result.ToApplicationResult(), user.Id);
     }
 
+    public async Task<Result> ChangeRolesAsync(string userId, IEnumerable<string> roles)
+    {
+        ApplicationUser user = await GetUserAsync(userId);
+        var userRoles = await GetUserRoleAsync(userId);
+        var removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
+        if (!removeResult.Succeeded)
+        {
+            return removeResult.ToApplicationResult();
+        }
+
+        var addResult = await _userManager.AddToRolesAsync(user, roles);
+
+        return addResult.ToApplicationResult();
+    }
+
     public async Task<bool> CheckPasswordAsync(string userId, string password)
     {
-        ApplicationUser user = await GetUser(userId);
+        ApplicationUser user = await GetUserAsync(userId);
         return await _userManager.CheckPasswordAsync(user, password);
     }
 
@@ -82,14 +97,14 @@ public class IdentityService : IIdentityService
 
         return result.ToApplicationResult();
     }
-    
+
     public async Task<IList<string>> GetUserRoleAsync(string userId)
     {
-        ApplicationUser user = await GetUser(userId);
+        ApplicationUser user = await GetUserAsync(userId);
         return await _userManager.GetRolesAsync(user);
     }
-    
-    private async Task<ApplicationUser> GetUser(string userId)
+
+    private async Task<ApplicationUser> GetUserAsync(string userId)
     {
         ApplicationUser? user = await _userManager.FindByIdAsync(userId);
         if (user is null)

@@ -240,6 +240,12 @@
             "type": "string",
             "minLength": 1,
             "nullable": false
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

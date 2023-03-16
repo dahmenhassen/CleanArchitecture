@@ -15,13 +15,11 @@ public class
     private readonly ICurrentUserService _currentUserService;
     private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
-    private readonly ITokenService _tokenService;
 
-    public GetCurrentUserQueryHandler(IApplicationDbContext context, ITokenService tokenService,
+    public GetCurrentUserQueryHandler(IApplicationDbContext context,
         IIdentityService identityService, ICurrentUserService currentUserService, IMapper mapper)
     {
         _context = context;
-        _tokenService = tokenService;
         _identityService = identityService;
         _currentUserService = currentUserService;
         _mapper = mapper;

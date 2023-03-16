@@ -5,15 +5,10 @@ namespace CleanArchitecture.Application.User.Queries.GetCurrentUser;
 
 public class GetCurrentUserQueryResponse : IMapFrom<UserInfo>
 {
-    public string Id { get; set; } = string.Empty;
-
-    public string FirstName { get; set; } = string.Empty;
-
-    public string LastName { get; set; } = string.Empty;
-
-    public string FullName { get; set; } = string.Empty;
-
-    public string UserName { get; set; } = string.Empty;
-
-    public IList<string> Roles { get; set; } = new List<string>();
+    public required string Id { get; set; }
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
+    public required string FullName { get; set; }
+    public required string UserName { get; set; }
+    public required IList<string> Roles { get; set; }
 }

@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using MediatR;
 
 namespace CleanArchitecture.Application.User.Commands.CreateUser;
@@ -11,28 +12,49 @@ public class
 {
     private readonly IApplicationDbContext _context;
     private readonly IIdentityService _identityService;
+    private readonly ICurrentUserService _currentUserService;
     private readonly ITokenService _tokenService;
 
     public CreateUserCommandHandler(IApplicationDbContext context, ITokenService tokenService,
-        IIdentityService identityService)
+        IIdentityService identityService, ICurrentUserService currentUserService)
     {
         _context = context;
         _tokenService = tokenService;
         _identityService = identityService;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ServiceResult<CreateUserCommandResponse>> Handle(CreateUserCommandRequest request,
         CancellationToken cancellationToken)
     {
-        (Result identityResult, string userId) =
-            await _identityService.CreateUserAsync(request.UserName, request.Password);
+        var currentUserId = _currentUserService.UserId;
+        List<string> roles = new() { Roles.User.ToString() };
 
-        if (!identityResult.Succeeded)
+        if (!string.IsNullOrEmpty(currentUserId))
         {
-            throw new ValidationException(identityResult.Errors);
+            var currentUserRoles = await _identityService.GetUserRoleAsync(currentUserId);
+            if (currentUserRoles.Contains(Roles.Admin.ToString()))
+            {
+                roles = request.Roles;
+            }
         }
 
-        UserInfo userInfo = new UserInfo
+        (Result createUserResult, string userId) =
+            await _identityService.CreateUserAsync(request.UserName, request.Password);
+
+        if (!createUserResult.Succeeded)
+        {
+            throw new ValidationException(createUserResult.Errors);
+        }
+
+        var changeRoleResult = await _identityService.ChangeRolesAsync(userId, roles);
+
+        if (!changeRoleResult.Succeeded)
+        {
+            throw new ValidationException(changeRoleResult.Errors);
+        }
+
+        UserInfo userInfo = new()
         {
             Id = userId, UserName = request.UserName, FirstName = request.FirstName, LastName = request.LastName
         };

@@ -17,5 +17,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommandReq
             .Equal(u => u.Password)
             .WithMessage("'Password' and 'Confirm password' are not the same")
             .NotEmpty().NotNull();
+        RuleFor(v => v.Roles).NotEmpty().NotNull();
     }
 }
