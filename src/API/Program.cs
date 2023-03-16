@@ -24,6 +24,8 @@ if (app.Environment.IsDevelopment())
         scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
     await initialiser.InitialiseAsync();
     await initialiser.SeedAsync();
+    
+    app.UseMiniProfiler();
 }
 else
 {

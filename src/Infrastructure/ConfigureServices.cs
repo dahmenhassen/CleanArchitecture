@@ -69,6 +69,14 @@ public static class ConfigureServices
         services.AddAuthorization(options =>
             options.AddPolicy("ShouldBeAuthenticatedUser", policy => policy.RequireAuthenticatedUser())
         );
+        
+        services.AddMiniProfiler(options =>
+        {
+            options.RouteBasePath = "/profiler";
+            options.IgnoredPaths.Add("/css");
+            options.IgnoredPaths.Add("/js");
+            options.IgnoredPaths.Add("/index.html");
+        }).AddEntityFramework();
 
         return services;
     }

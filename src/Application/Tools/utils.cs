@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Tools;
 
-public class Utils
+public static class Utils
 {
     public static void CheckIsIdsAreSame(string id1, string id2)
     {
