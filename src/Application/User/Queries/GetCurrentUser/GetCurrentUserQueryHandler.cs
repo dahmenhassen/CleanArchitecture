@@ -33,7 +33,7 @@ public class
             throw new UnauthorizedAccessException();
         }
 
-        IList<string> roles = await _identityService.GetUserRoleAsync(currentUserId);
+        IList<string> roles = await _identityService.GetUserRolesAsync(currentUserId);
         UserInfo? userInfo = _context.UserInfos.FirstOrDefault(u => u.Id == currentUserId);
 
         GetCurrentUserQueryResponse? result = _mapper.Map<GetCurrentUserQueryResponse>(userInfo);

@@ -43,7 +43,7 @@ public class IdentityService : IIdentityService
     public async Task<Result> ChangeRolesAsync(string userId, IEnumerable<string> roles)
     {
         ApplicationUser user = await GetUserAsync(userId);
-        IList<string> userRoles = await GetUserRoleAsync(userId);
+        IList<string> userRoles = await GetUserRolesAsync(userId);
         IdentityResult removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
         if (!removeResult.Succeeded)
         {
@@ -91,7 +91,7 @@ public class IdentityService : IIdentityService
         return await DeleteUserAsync(user);
     }
 
-    public async Task<IList<string>> GetUserRoleAsync(string userId)
+    public async Task<IList<string>> GetUserRolesAsync(string userId)
     {
         ApplicationUser user = await GetUserAsync(userId);
         return await _userManager.GetRolesAsync(user);

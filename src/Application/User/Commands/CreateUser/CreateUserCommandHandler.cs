@@ -32,7 +32,7 @@ public class
 
         if (!string.IsNullOrEmpty(currentUserId))
         {
-            IList<string> currentUserRoles = await _identityService.GetUserRoleAsync(currentUserId);
+            IList<string> currentUserRoles = await _identityService.GetUserRolesAsync(currentUserId);
             if (currentUserRoles.Contains(Roles.Admin.ToString()))
             {
                 roles = request.Roles;
