@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-      <RootNamespace>CleanArchitecture.WebUI.AcceptanceTests</RootNamespace>
-      <AssemblyName>CleanArchitecture.WebUI.AcceptanceTests</AssemblyName>
+      <RootNamespace>CleanArchitecture.API.AcceptanceTests</RootNamespace>
+      <AssemblyName>CleanArchitecture.API.AcceptanceTests</AssemblyName>
       <Nullable>enable</Nullable>
       <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
