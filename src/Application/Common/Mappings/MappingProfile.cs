@@ -1,5 +1,7 @@
 using System.Reflection;
 using AutoMapper;
+using CleanArchitecture.Application.User.Queries.GetUsersWithPagination;
+using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.Common.Mappings;
 
