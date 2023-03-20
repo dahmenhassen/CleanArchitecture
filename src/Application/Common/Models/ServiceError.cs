@@ -18,6 +18,7 @@ public class ServiceError
     public static ServiceError ForbiddenError => new("You are not authorized to call this action.", 998);
 
     public static ServiceError UserNotFound => new("User does not exist", 996);
+    public static ServiceError WrongUserNameOrPassword => new("Wrong username or password", 962);
 
     public static ServiceError UserFailedToCreate => new("Failed to create User.", 995);
 

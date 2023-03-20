@@ -10,6 +10,20 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApiServices();
 
+// const string allowSpecificOrigins = "_allowSpecificOrigins";
+//
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy(name: allowSpecificOrigins,
+//         policy =>
+//         {
+//             policy.WithOrigins(
+//                 "http://localhost:4200",
+//                 "https://localhost:4200"
+//             );
+//         });
+// });
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,7 +38,7 @@ if (app.Environment.IsDevelopment())
         scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
     await initialiser.InitialiseAsync();
     await initialiser.SeedAsync();
-    
+
     app.UseMiniProfiler();
 }
 else

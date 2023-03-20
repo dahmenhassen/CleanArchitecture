@@ -31,8 +31,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, ServiceR
 
         if (!await _identityService.CheckPasswordAsync(userInfo.Id, request.Password))
         {
-            return ServiceResult.Failed<LoginCommandResponse>(
-                ServiceError.CustomMessage("UserName or Password is invalid"));
+            return ServiceResult.Failed<LoginCommandResponse>(ServiceError.WrongUserNameOrPassword);
         }
 
         string token = _tokenService.CreateJwtSecurityToken(userInfo.Id) ?? string.Empty;
