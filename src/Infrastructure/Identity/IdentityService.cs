@@ -26,8 +26,14 @@ public class IdentityService : IIdentityService
 
     public async Task<string?> GetUserNameAsync(string userId)
     {
-        ApplicationUser user = await GetUserByIdAsync(userId);
-        return user.UserName;
+        ApplicationUser? user = await _userManager.FindByIdAsync(userId);
+        return user?.UserName;
+    }
+    
+    public async Task<string?> GetUserIdAsync(string userName)
+    {
+        ApplicationUser? user = await _userManager.FindByEmailAsync(userName);
+        return user?.Id;
     }
 
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)

@@ -22,19 +22,19 @@ public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, ServiceR
     public async Task<ServiceResult<LoginCommandResponse>> Handle(LoginCommandRequest request,
         CancellationToken cancellationToken)
     {
-        UserInfo? userInfo = _context.UserInfos.FirstOrDefault(u => u.UserName == request.UserName);
-
-        if (userInfo is null)
+        var userId = await _identityService.GetUserIdAsync(request.UserName);
+        
+        if (userId is null)
         {
             return ServiceResult.Failed<LoginCommandResponse>(ServiceError.UserNotFound);
         }
 
-        if (!await _identityService.CheckPasswordAsync(userInfo.Id, request.Password))
+        if (!await _identityService.CheckPasswordAsync(userId, request.Password))
         {
             return ServiceResult.Failed<LoginCommandResponse>(ServiceError.WrongUserNameOrPassword);
         }
 
-        string token = _tokenService.CreateJwtSecurityToken(userInfo.Id) ?? string.Empty;
+        string token = _tokenService.CreateJwtSecurityToken(userId) ?? string.Empty;
 
         return ServiceResult.Success(new LoginCommandResponse { Token = token });
     }
