@@ -38,8 +38,8 @@ public class
             }
         }
 
-        (Result createUserResult, string userId) =
-            await _identityService.CreateUserAsync(request.UserName, request.Password);
+        (Result createUserResult, string userId) = await _identityService
+            .CreateUserAsync(request.UserName, request.Password);
 
         if (!createUserResult.Succeeded)
         {
