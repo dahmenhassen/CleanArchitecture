@@ -26,7 +26,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, ServiceR
         
         if (userId is null)
         {
-            return ServiceResult.Failed<LoginCommandResponse>(ServiceError.UserNotFound);
+            return ServiceResult.Failed<LoginCommandResponse>(ServiceError.WrongUserNameOrPassword);
         }
 
         if (!await _identityService.CheckPasswordAsync(userId, request.Password))
